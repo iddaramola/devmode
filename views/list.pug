@@ -1,0 +1,167 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title  List Expenses
+    style.
+     textarea {
+       padding: 10px;
+       line-height: 1.5;
+       vertical-align: top;
+       border-radius: 5px;
+       border: 1px solid #ccc;
+       box-shadow: 1px 1px 1px #999;
+       resize: none;
+       overflow: auto;
+       margin: 5px;
+      }
+     button {
+       /* width: 60%;
+        margin: 0 auto;*/
+        border: 0;
+        padding: 0 20px;
+        font-size: 1rem;
+        text-align: center;
+        color: #fff;
+        text-shadow: 1px 1px 1px #000;
+        border-radius: 10px;
+        background-color: rgba(20, 150, 80, 1);
+        box-shadow: inset 2px 2px 3px rgba(25, 155, 55, .6);
+        grid-column: 2;
+        justify-self: start;
+                
+      }
+     input {
+       margin: .5rem 0;
+       padding: .5rem;
+       border-radius: 4px;
+       border: 1px solid #ddd;
+       justify-self: start;
+       align-self: start;
+      }
+      legend {
+        background-color: #000;
+        color: #fff;
+        padding: 3px 6px;
+        
+      }
+
+      label {
+       /*display: inline-block;*/
+       font-size: 1rem;
+       justify-self: end;
+      }
+     .container {
+        display: grid;
+        width: 100%;
+      
+       grid-template-columns: 1fr 2fr;
+       grid-template-rows: 1fr 1fr 1fr;
+       
+       grid-gap: 10px;
+      }
+
+
+
+      table {
+       table-layout: fixed;
+       width:100%;
+       border-collapse: collapse;
+       border-spacing:0;
+       border: 2px solid rgb(20,190,50);
+       letter-spacing: 1px;
+       font-size: 0.8rem;
+       }
+      thead th:nth-child(1) {
+        width: 15%;
+      }
+      thead th:nth-child(2){
+        width: 15%; 
+      }
+      thead th:nth-child(3){
+        width: 30%;
+      }
+      thead th:nth-child(4){
+        width: 40%;
+      }
+
+      td, th {
+        border: 1px solid rgb(19,190,90);
+        padding: 10px 20px;
+      }
+
+      th {
+         background-color: rgb(235,235,235);
+         vertical-align:bottom;
+      }
+
+      td {
+        text-align: center; /*this is necesary for the text inside 'th' to align with that inside 'td' */
+        font-size: 1.2em;
+    
+      }
+
+          /* Zebra striping styles to make rows stand out and easier to read */
+       tr:nth-child(even) td {
+         background-color: rgba(50,150,50,0.8);
+       }
+
+      tr:nth-child(odd) td {
+         background-color: rgba(45,145,25, 0.6);
+      }
+
+      caption {
+         padding: 10px;
+         font-size: 2em;
+         text-align: center;
+      }
+      .table__wrapper{
+        width: 60%;
+        margin: auto;
+      }
+      ul{
+        display: flex;
+        list-style-type: none;
+        background-color: rgba(34, 156, 35, 0.7);
+        justify-content: flex-end;
+      }
+      a{
+        text-decoration: none;
+      }
+     
+    
+
+  body
+   nav
+    ul
+     li
+      a(href="/add", title="My Expenses") Add Expense
+   div.table__wrapper
+    table
+     caption My expenses
+     thead
+      tr
+       th Expense (&pound;)
+       th VAT (&pound;)
+       th Date
+       th Remark
+     
+     each item in results
+      tr
+       each value in item
+        td= value  
+    
+    
+    
+
+
+   
+
+    
+    
+    
+
+    
+

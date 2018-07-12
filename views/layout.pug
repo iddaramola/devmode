@@ -1,0 +1,174 @@
+doctype html
+html
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title  Kanban Expenses
+    style
+     //- include ../public/normalize.css
+    style.
+     html, body{
+       height: 100%;
+     }
+     textarea {
+       padding: 10px;
+       line-height: 1.5;
+       vertical-align: top;
+       border-radius: 5px;
+       border: 1px solid #ccc;
+       box-shadow: 1px 1px 1px #999;
+       resize: none;
+       overflow: auto;
+       margin: 5px;
+      }
+     button {
+       /* width: 60%;
+        margin: 0 auto;*/
+        border: 0;
+        padding: 0 20px;
+        font-size: 1rem;
+        text-align: center;
+        color: #fff;
+        text-shadow: 1px 1px 1px #000;
+        border-radius: 10px;
+        background-color: rgba(20, 150, 80, 1);
+        box-shadow: inset 2px 2px 3px rgba(25, 155, 55, .6);
+        grid-column: 2;
+        justify-self: start;
+                
+      }
+     input {
+       margin: .5rem 0;
+       padding: .5rem;
+       border-radius: 4px;
+       border: 1px solid #ddd;
+       justify-self: start;
+       align-self: start;
+       caret-color:red;
+      }
+
+     button, input, select, textarea {
+       font-family : inherit;
+       font-size   : 100%;
+      }
+      legend {
+        background-color: #000;
+        color: #fff;
+        padding: 3px 6px;
+        
+      }
+
+      label {
+       /*display: inline-block;*/
+       font-size: 1rem;
+       justify-self: end;
+      }
+     .container {
+        display: grid;
+        width: 100%;
+       
+       grid-template-columns: 1fr 2fr;
+       grid-template-rows: 1fr 1fr 1fr;
+       align-items:s;
+       
+       grid-gap: 5px;
+      }
+      .form-wrapper{
+        width: 30%;
+        height: auto;
+        margin: 0 auto;
+        
+        
+      }
+      ul{
+        display: flex;
+        list-style-type: none;
+        background-color: rgba(34, 156, 35, 0.7);
+        justify-content: flex-end;
+      }
+      a{
+        text-decoration: none;
+      }
+      
+      
+      .vat{
+        width: 30%;
+        height: 150px;
+        font-size: 1.3em;
+        text-align:center;
+        margin: 10px auto;
+        border: 1px solid #2299a0;
+        
+      }
+      span{
+        color:green;
+      }
+     
+    
+
+  body
+   nav
+    ul
+     li
+      a(href="/list", title="My Expenses") My Expenses
+   div.form-wrapper
+    form(action="/save", method="POST")
+     fieldset
+      legend Add Expense
+      div.container
+       label(for= "amount") Expense:
+       input(id="amount", type="text", name="amount", placeholder="25000 or 2000 EUR")
+      
+       label(for="date") Date:
+       input(id="date", type="text", name="date", placeholder="yyyy-mm-dd")
+      
+       label(for= "remark") Remark:
+       textarea(id="remark", name="remark", placeholder="Reason for the expense")
+      
+       button( name="submit", type="submit", value="Save Expense") Save Expense
+   div.vat VAT (&pound;)
+    hr
+    span(id="vat") 
+   script.
+    function handle1 (evt){
+      const amount_str = evt.target.value;
+      const regex = /eUr$/i;
+      const vat = document.getElementById("vat");
+
+      if(amount_str.match(regex)){
+          const amount_eur = Number.parseFloat(amount_str);
+          //use Fecth API
+          fetch('https://forex.1forge.com/1.0.3/convert?from=EUR&to=GBP&quantity=1&api_key=sfi5B1lpJcqu2GhTIMM93bs7yxlsTF0Q')
+          .then(function(response) {
+              return response.json();
+           })
+          .then(function(myJson) {
+              console.log((myJson.value).toFixed(2));
+           vat.textContent  =   (amount_eur * ((myJson.value).toFixed(2)) * 0.2 /1.2).toFixed(2) ;
+          });
+       } else{
+            if (isNaN(Number(amount_str))){
+                vat.textContent = '';
+            }else{
+            vat.textContent = ( Number(amount_str) * 0.2 / 1.2).toFixed(2);
+            }
+       }
+
+    }
+    function handle2 (evt){
+    var amount = document.getElementById("amount");
+    amount.addEventListener('input', handle1); 
+    }
+
+    document.addEventListener('DOMContentLoaded', handle2)             
+
+
+   
+
+    
+    
+    
+
+    
+
