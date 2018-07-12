@@ -25,11 +25,29 @@ exports.saveExpense = function(req, res){
     let remark = req.body.remark;
     //console.log(typeof amount)
     //test if the user enter expense in euros, if so, check public API for latest exchange rate
+    const connection = mysql.createConnection({
+      host     : process.env.DB_HOST,
+      user     : process.env.DB_USER,
+      password : process.env.DB_PASS,
+      port     : process.env.DB_PORT,
+      database : process.env.DB_NAME
+    });
+    connection.connect((err) => {
+      if(err){
+        console.log('Error connecting to Db');
+        return;
+      }
+      console.log('Connection established');
+    });
+   
     let amount_match = amount_str.match(regex)// returns an array or null
+
     if (amount_match !== null){
        // if user enters amount in EUROS, convert it to pounds.
        //hit  1Forge.com public API for forex data
+       console.log('inside if, before Number')
        amount_eur = Number.parseFloat(amount_str);
+       console.log('inside if after Number')
        //asynchronous network call
        axios.get('https://forex.1forge.com/1.0.3/convert?from=EUR&to=GBP&quantity=1&api_key=sfi5B1lpJcqu2GhTIMM93bs7yxlsTF0Q')
        .then(function (response) {
@@ -50,8 +68,9 @@ exports.saveExpense = function(req, res){
             console.log(error);
       });
     }else{
-        amount = Number;
+        amount = Number(amount_str);
         query = `INSERT INTO getdev (amount, date, remark) VALUES(${amount}, "${date}", "${remark}")`;
+      
         connection.query(query, function (error, results, fields) {
            if (error) throw error;
            console.log( results.insertId);
@@ -62,22 +81,7 @@ exports.saveExpense = function(req, res){
             console.log("all queued queries successfully executed. server shutting down...")
        });
     }
-   
-    const connection = mysql.createConnection({
-        host     : process.env.DB_HOST,
-        user     : process.env.DB_USER,
-        password : process.env.DB_PASS,
-        port     : process.env.DB_PORT,
-        database : process.env.DB_NAME
-      });
-       
-      connection.connect((err) => {
-          if(err){
-            console.log('Error connecting to Db');
-            return;
-          }
-          console.log('Connection established');
-        });
+  
       
   
 
@@ -88,12 +92,13 @@ exports.saveExpense = function(req, res){
 
 exports.listExpense=function(req, res){
 
-    const connection = mysql.createConnection({
-        host     : 'localhost',
-        user     : 'root',
-        password : '$$plat',
-        database : 'kanban'
-      });
+  const connection = mysql.createConnection({
+    host     : process.env.DB_HOST,
+    user     : process.env.DB_USER,
+    password : process.env.DB_PASS,
+    port     : process.env.DB_PORT,
+    database : process.env.DB_NAME
+  });
        
       connection.connect((err) => {
           if(err){
