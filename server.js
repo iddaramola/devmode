@@ -3,6 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const routes = require('./routes/index');
+// import environmental variables from our variables.env file
+require('dotenv').config({ path: 'variables.env' });
 
 
 
