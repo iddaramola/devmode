@@ -6,7 +6,7 @@ const routes = require('./routes/index');
 // import environmental variables from our variables.env file
 require('dotenv').config({ path: 'variables.env' });
 
-
+var port = process.env.PORT || 8000
 
 
 
@@ -32,7 +32,10 @@ app.use(bodyParser.json())
 // After allllll that above middleware, we finally handle our own routes!
 app.use('/', routes);
 
-app.listen(3000, ()=> console.log('express listening'))
+
+app.listen(port, function() {
+    console.log("App is running on port " + port);
+});
 
 
 
